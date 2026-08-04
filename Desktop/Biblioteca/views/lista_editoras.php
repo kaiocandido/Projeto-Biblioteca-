@@ -11,6 +11,13 @@
   <?php
   require_once 'menu.php';
   ?>
+
+  <?php
+    require_once '../Biblioteca/classes/Editora.php';
+    $editora = new Editora();
+
+    $dados_editora = $editora->obter();
+  ?>
   <!-- Breadcrumb -->
   <nav class="px-6 py-3 text-sm text-gray-400" aria-label="Breadcrumb">
     <ol class="list-reset flex space-x-2">
@@ -40,15 +47,23 @@
 
   <!-- Lista de Editoras (Exemplos Estáticos) -->
   <section class="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-    <div class="bg-gray-700 hover:bg-gray-600 rounded-lg p-6 shadow-lg">
-      <h3 class="text-xl font-semibold mb-4 break-words overflow-hidden">Editora Livros Bons</h3>
-      <p class="text-sm text-gray-400 mb-4">Data de Cadastro: 10/10/2025</p>
-      <p class="text-sm text-gray-300 mb-4">10 livro(s)</p>
-      <div class="flex space-x-4">
-        <a href="cadastro_editora.php?id=00" class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-1 px-4 rounded">Editar</a>
-        <a href="excluir_editora.php?id=00" class="bg-red-500 hover:bg-red-600 text-white font-semibold py-1 px-4 rounded">Excluir</a>
+    <?php
+      foreach($dados_editora as $editora)
+        {
+
+    ?>
+      <div class="bg-gray-700 hover:bg-gray-600 rounded-lg p-6 shadow-lg">
+        <h3 class="text-xl font-semibold mb-4 break-words overflow-hidden"><?= $editora['nome']  ?></h3>
+        <p class="text-sm text-gray-400 mb-4"><?= $editora['data_cadastro']  ?></p>
+        <p class="text-sm text-gray-300 mb-4"><?= $editora['total_livros']  ?> livro(s)</p>
+        <div class="flex space-x-4">
+          <a href="cadastro_editora.php?id=<?= $editora['id_editora']?>" class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-1 px-4 rounded">Editar</a>
+          <a href="excluir_editora.php?id=<?= $editora['id_editora']?>" class="bg-red-500 hover:bg-red-600 text-white font-semibold py-1 px-4 rounded">Excluir</a>
+        </div>
       </div>
-    </div>
+    <?php
+        }
+    ?>
   </section>
 
   <!-- Mensagem se nenhum resultado -->
