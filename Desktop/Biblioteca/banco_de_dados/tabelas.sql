@@ -84,12 +84,7 @@ CREATE TABLE controle_rotinas(
     ultima_execucao DATE
 );
 
-INSERT INTO status_locacao (id_status_locacao, descricao) VALUES 
-(1, 'Alugado'), 
-(2, 'Atrasado'),
-(3, 'Devolvido');
 
-INSERT INTO controle_rotinas (rotina) values ('atualizacao_atrasos');
 
 
 
