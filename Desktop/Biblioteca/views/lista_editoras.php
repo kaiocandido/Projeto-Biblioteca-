@@ -17,6 +17,12 @@
     $editora = new Editora();
 
     $dados_editora = $editora->obter();
+
+
+    if(isset($_POST['nome_editora'])){
+      $nome_editora = htmlspecialchars($_POST['nome_editora']);
+      $editoras = $editora->obter($nome_editora);
+    }
   ?>
   <!-- Breadcrumb -->
   <nav class="px-6 py-3 text-sm text-gray-400" aria-label="Breadcrumb">
@@ -40,7 +46,7 @@
     <p class="text-gray-400 mt-2">Aqui estão as editoras cadastradas na biblioteca.</p>
 
     <div class="mt-6 flex justify-center space-x-4">
-      <input type="text" maxlength="100" value="" name="nome_editora" placeholder="Filtrar por nome..." class="w-1/3 p-2 rounded bg-gray-700 text-white placeholder-gray-400 border border-gray-600">
+      <input type="text" maxlength="100" value="<?= $nome_editora ?? '' ?>" name="nome_editora" placeholder="Filtrar por nome..." class="w-1/3 p-2 rounded bg-gray-700 text-white placeholder-gray-400 border border-gray-600">
       <button type="submit" class="w-full md:w-1/5 bg-blue-600 hover:bg-blue-700 text-white font-semibold p-2 rounded">Pesquisar</button>
     </div>
   </form>
@@ -67,6 +73,12 @@
   </section>
 
   <!-- Mensagem se nenhum resultado -->
-  <p style="text-align: center;">Dados não encontrados.</p>
+   <?php
+      if (empty($editoras)) {
+    ?>
+          <p style="text-align: center;">Dados não encontrados.</p>
+    <?php
+      }
+   ?>
 </body>
 </html>
