@@ -10,6 +10,19 @@
 
 <?php
 require_once 'menu.php';
+
+require_once './Desktop/Biblioteca/classes/Categorias.php';
+
+$categoria = new Categoria();
+
+$categorias = $categoria->obter();
+
+if (isset($_POST['nome_categoria'])) {
+    $nome_categoria = htmlspecialchars($_POST['nome_categoria']);
+    $categorias = $categoria->obter($nome_categoria);
+}
+
+
 ?>
   <!-- Breadcrumb -->
   <nav class="px-6 py-3 text-sm text-gray-400" aria-label="Breadcrumb">
@@ -36,7 +49,7 @@ require_once 'menu.php';
     <div class="mt-6 flex justify-center space-x-4">
       <input
         type="text"
-        value=""
+        value="<?= $nome_categoria ?? '' ?>"
         name="nome_categoria"
         placeholder="Filtrar por nome..."
         class="w-1/3 p-2 rounded bg-gray-700 text-white placeholder-gray-400 border border-gray-600"
@@ -48,18 +61,30 @@ require_once 'menu.php';
   </form>
 
   <!-- Lista de categorias (exemplos fixos) -->
-  <section class="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-    <div class="bg-gray-700 hover:bg-gray-600 rounded-lg p-6 shadow-lg">
-      <h3 class="text-xl font-semibold mb-4 break-words">Romance</h3>
-      <p class="text-sm text-gray-300 mb-4">10 livro(s)</p>
-      <div class="flex space-x-4">
-        <a href="cadastro_categoria.php?id=00" class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-1 px-4 rounded">Editar</a>
-        <a href="excluir_categoria.php?id=00" class="bg-red-500 hover:bg-red-600 text-white font-semibold py-1 px-4 rounded">Excluir</a>
+   <section class="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+   <?php
+    foreach($categorias as $c){
+    ?>
+      <div class="bg-gray-700 hover:bg-gray-600 rounded-lg p-6 shadow-lg">
+        <h3 class="text-xl font-semibold mb-4 break-words"><?= $c['descricao'] ?></h3>
+        <p class="text-sm text-gray-300 mb-4"><?= $c['total_livros'] ?>livro(s)</p>
+        <div class="flex space-x-4">
+          <a href="cadastro_categoria.php?id=<?= $c['id_categoria'] ?>" class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-1 px-4 rounded">Editar</a>
+          <a href="excluir_categoria.php?id=<?= $c['id_categoria'] ?>" class="bg-red-500 hover:bg-red-600 text-white font-semibold py-1 px-4 rounded">Excluir</a>
+        </div>
       </div>
-    </div>
+    <?php
+    }
+   ?>
   </section>
 
-  <!-- Mensagem se vazio -->
-  <p style="text-align: center;">Dados não encontrados.</p>
+  <?php
+  if(empty($categorias)){
+    ?>
+    <p style="text-align: center;">Dados não encontrados.</p>
+  <?php
+  }
+  ?>
+  
 </body>
 </html>
