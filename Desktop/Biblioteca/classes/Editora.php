@@ -11,29 +11,29 @@ class Editora{
     }
 
     public function  obter($nome_editora = null){
-         try {
+        try {
 
             $params = [];
             
             $sql = "
-                    SELECT 
-                        e.id_editora, 
-                        e.nome, 
+                    SELECT
+                        e.id_editora,
+                        e.nome,
                         DATE_FORMAT(e.data_cadastro, '%d/%m/%Y') AS data_cadastro,
                     COUNT(l.id_livro) AS total_livros
-                    FROM 
-                        editora e 
-                    LEFT JOIN 
+                    FROM
+                        editora e
+                    LEFT JOIN
                         livro l
                     ON
-                        e.id_editora = l.id_editora 
+                        e.id_editora = l.id_editora
                     ";
             
             if(!empty($nome_editora)){
                 $sql .="
                         WHERE
-                            UPPER(e.nome) 
-                        LIKE 
+                            UPPER(e.nome)
+                        LIKE
                             UPPER(:nome_editora)
                     ";
                 $params[':nome_editora'] = "%$nome_editora%";
@@ -41,9 +41,9 @@ class Editora{
 
             $sql .= "
                     GROUP BY
-                        e.id_editora, 
-                        e.nome, 
-                        e.data_cadastro 
+                        e.id_editora,
+                        e.nome,
+                        e.data_cadastro
                     ";
 
             $stmt = $this->conexao->prepare($sql);
@@ -51,15 +51,28 @@ class Editora{
             $dados = $stmt->fetchAll(PDO::FETCH_ASSOC);
             return $dados;
 
-         } catch (PDOException $e) {
+        } catch (PDOException $e) {
             return array();
-         }catch (Exception $e) {
+        }catch (Exception $e) {
             return array();
-         }
+        }
     }
 
     public function obterId(){
 
+    }
+
+    public function incluir($nome){
+        try {
+            $sql = $this->conexao->prepare("INSERT INTO editora (nome) VALUES (:nome)");
+            $sql->bindValue(":nome", $nome);
+            $sql->execute();
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }catch (Exception $e) {
+            return false;
+        }
     }
 
 }
