@@ -58,10 +58,6 @@ class Editora{
         }
     }
 
-    public function obterId(){
-
-    }
-
     public function incluir($nome){
         try {
             $sql = $this->conexao->prepare("INSERT INTO editora (nome) VALUES (:nome)");
@@ -74,5 +70,49 @@ class Editora{
             return false;
         }
     }
+    
+    public function obterId($id_editora){
+        try {
+            $sql = $this->conexao->prepare("SELECT 
+                                                id_editora, 
+                                                nome, 
+                                                data_cadastro
+                                            FROM
+                                                editora
+                                            WHERE
+                                                id_editora = :id_editora
+                                        ");
+            $sql->bindValue(':id_editora', $id_editora);
+            $sql->execute();
 
+            $dadosEditora = $sql->fetch(PDO::FETCH_ASSOC);
+
+            return $dadosEditora;
+        } catch (PDOException $e) {
+            return array();
+        } catch (Exception $e){
+            return array();
+        }
+    }
+
+
+    public function alterar($id_editora, $nome_editora){
+        try {
+            $sql =$this->conexao->prepare("UPDATE
+                                                editora
+                                            SET
+                                                nome = :nome
+                                            WHERE
+                                                id_editora = :id_editora    
+                                            ");
+            $sql->bindValue(':id_editora', $id_editora);
+            $sql->bindValue(':nome', $nome_editora);
+            $sql->execute();
+            return true;
+        }catch(PDOException $e){
+            return false;
+        }catch(Exception $e){
+            return false;
+        }
+    }
 }

@@ -9,22 +9,27 @@
 
   <?php
     require_once 'menu.php';
-    require_once '../processamento/editadora_processamento.php';
+    require_once '../Projeto-Biblioteca-/Desktop/Biblioteca/processamento/editadora_processamento.php';
   ?>
  
   <!-- Conteúdo -->
   <main class="p-6 max-w-3xl mx-auto">
+    <?php
+      if(isset($msgErro)){
+        ?>
+          <div class="mb-6 bg-red-700 text-white px-5 py-3 rounded-lg shadow-md flex items-start gap-3 animate-pulse">
+            <svg class="w-6 h-6 mt-1 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M12 5a7 7 0 100 14 7 7 0 000-14z"/>
+            </svg>
+            <div>
+              <strong class="block font-bold mb-1">Erro:</strong>
+              <span><?= $msgErro ?? '' ?></span>
+            </div>
+          </div>
+    <?php
+      }
+    ?>
 
-    <div class="mb-6 bg-red-700 text-white px-5 py-3 rounded-lg shadow-md flex items-start gap-3 animate-pulse">
-      <svg class="w-6 h-6 mt-1 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M12 5a7 7 0 100 14 7 7 0 000-14z"/>
-      </svg>
-      <div>
-        <strong class="block font-bold mb-1">Erro:</strong>
-        <span>erro aqui</span>
-      </div>
-    </div>
-    
     <!-- Botão Voltar -->
     <a href="lista_editoras.php" class="inline-block mb-4 bg-gray-700 hover:bg-gray-800 px-4 py-2 rounded text-white">
       ← Voltar
@@ -38,7 +43,7 @@
         <input id="nome_editora" name="nome_editora" type="text" autocomplete="off" 
                class="w-full p-2 rounded bg-gray-700 text-white border border-gray-600" 
                required placeholder="Digite o nome da editora" maxlength="100"
-               value="">
+               value="<?= $nome_editora ?? '' ?>">
       </div>
       <!-- Botão Salvar -->
       <div class="text-right">
