@@ -26,13 +26,13 @@ if(isset($_POST['nome_autor'])){
         if($autor->alterar($id_autor, $nome_autor)){
             redirecionar();
         }else {
-            $msgErro = "Falha no cadastro de autores.";
+            $msgErro = "Falha na alteração de autor.";
         }
     }else {
         if($autor->incluir($nome_autor)){
             redirecionar();
         }else {
-            $msgErro = "Falha na alteração de autor.";
+            $msgErro = "Falha no cadastro de autor.";
         }
     }
 }

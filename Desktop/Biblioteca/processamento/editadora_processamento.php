@@ -26,13 +26,13 @@ if(isset($_POST['nome_editora'])){
         if($editora->alterar($id_editora, $nome_editora)){
             redirecionar();
         }else {
-            $msgErro = "Falha no cadastro de editoras.";
+            $msgErro = "Falha na alteração de editora.";
         }
     }else {
         if($editora->incluir($nome_editora)){
             redirecionar();
         }else {
-            $msgErro = "Falha na alteração de editora.";
+            $msgErro = "Falha no cadastro de editora.";
         }
     }
 }

@@ -115,4 +115,76 @@ class Editora{
             return false;
         }
     }
+
+    private function excluirExemplaresEditora($id_editora){
+        $sql = $this->conexao->prepare("DELETE 
+                                        FROM 
+                                            exemplar 
+                                        WHERE 
+                                            id_livro IN (SELECT id_livro FROM  livro WHERE id_editora = :id_editora)
+                                        ");
+        $sql->bindValue('id_editora', $id_editora);
+        $sql->execute();
+    }
+
+    private function excluirLivrosEditora($id_editora){
+        $sql = $this->conexao->prepare("DELETE 
+                                        FROM 
+                                            livro 
+                                        WHERE 
+                                            id_editora = :id_editora
+                                        ");
+        $sql->bindValue('id_editora', $id_editora);
+        $sql->execute();
+    }
+
+    private function excluirEditora($id_editora){
+        $sql = $this->conexao->prepare("DELETE 
+                                        FROM 
+                                            editora 
+                                        WHERE 
+                                            id_editora = :id_editora
+                                        ");
+        $sql->bindValue('id_editora', $id_editora);
+        $sql->execute();
+    }
+
+    private function excluirLocacao($id_editora){
+        $sql = $this->conexao->prepare("DELETE 
+                                        FROM 
+                                            locacao 
+                                        WHERE 
+                                            id_exemplar 
+                                        IN (
+                                            SELECT 
+                                                e.id_exemplar 
+                                            FROM 
+                                                exemplar 
+                                            JOIN 
+                                                livro l 
+                                            ON 
+                                                e.id_livro = l.id_livro 
+                                            WHERE 
+                                                l.id_editora = :id_editora
+                                        ");
+        $sql->bindValue('id_editora', $id_editora);
+        $sql->execute();
+    }
+
+    public function excluir($id_editora){
+        try {
+            $this->conexao->beginTransaction();
+            
+            $this->excluirLocacao($id_editora);
+            $this->excluirExemplaresEditora($id_editora);
+            $this->excluirLivrosEditora($id_editora);
+            $this->excluirEditora($id_editora);
+
+            $this->conexao->commit();
+        }catch(PDOException $e){
+            $this->conexao->rollback();
+        }catch(Exception $e){
+            $this->conexao->rollback();
+        }
+    }
 }

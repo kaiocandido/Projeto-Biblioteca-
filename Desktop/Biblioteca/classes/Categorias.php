@@ -56,8 +56,61 @@ class Categoria{
          }
     }
 
-    public function obterId(){
+    public function incluir($descricao){
+        try {
+            $sql = $this->conexao->prepare("INSERT INTO categoria (descricao) VALUES (:descricao)");
+            $sql->bindValue(":descricao", $descricao);
+            $sql->execute();
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }catch (Exception $e) {
+            return false;
+        }
+    }
 
+    public function alterar($id_categoria, $descricao){
+        try {
+            $sql =$this->conexao->prepare("UPDATE
+                                                categoria
+                                            SET
+                                                descricao = :descricao
+                                            WHERE
+                                                id_categoria = :id_categoria   
+                                            ");
+            $sql->bindValue(':id_categoria', $id_categoria);
+            $sql->bindValue(':descricao', $descricao);
+            $sql->execute();
+            return true;
+        }catch(PDOException $e){
+            return false;
+        }catch(Exception $e){
+            return false;
+        }
+    }
+
+
+    public function obterId($id_categoria){
+        try {
+            $sql = $this->conexao->prepare("SELECT 
+                                                id_categoria, 
+                                                descricao,
+                                            FROM
+                                                categoria
+                                            WHERE
+                                                id_categoria = :id_categoria
+                                        ");
+            $sql->bindValue(':id_categoria', $id_categoria);
+            $sql->execute();
+
+            $dadosCategoria = $sql->fetch(PDO::FETCH_ASSOC);
+
+            return $dadosCategoria;
+        } catch (PDOException $e) {
+            return array();
+        } catch (Exception $e){
+            return array();
+        }
     }
 
 }
