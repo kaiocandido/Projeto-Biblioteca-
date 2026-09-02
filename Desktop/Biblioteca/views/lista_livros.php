@@ -9,6 +9,24 @@
 <body class="bg-gray-900 text-white min-h-screen">
 <?php
 require_once 'menu.php';
+require_once '../Projeto-Biblioteca-/Desktop/Biblioteca/classes/Categorias.php';
+require_once '../Projeto-Biblioteca-/Desktop/Biblioteca/classes/Livros.php';
+
+$categoria = new Categoria();
+$livros = new Livro();
+
+$categoria->obter();
+$livros->obter();
+
+if(isset($_POST['titulo'])){
+  $titulo = htmlspecialchars($_POST['titulo']);
+  $autor = htmlspecialchars($_POST['autor']);
+  $editora = htmlspecialchars($_POST['editora']);
+  $categoria_filtro = htmlspecialchars($_POST['categoria']);
+
+  $livros->obter($titulo, $autor, $categoria_filtro, $editora);
+}
+
 ?>
   <!-- Breadcrumb -->
   <nav class="px-6 py-3 text-sm text-gray-400" aria-label="Breadcrumb">
@@ -30,7 +48,7 @@ require_once 'menu.php';
       <input
         type="text"
         name="titulo"
-        value=""
+        value="<?= $titulo ?? '' ?>"
         placeholder="Título..."
         class="w-full md:w-1/5 p-2 rounded bg-gray-800 text-white border border-gray-700"
       />
@@ -38,7 +56,7 @@ require_once 'menu.php';
       <input
         type="text"
         name="autor"
-        value=""
+        value="<?= $autor ?? ''?>"
         placeholder="Autor..."
         class="w-full md:w-1/5 p-2 rounded bg-gray-800 text-white border border-gray-700"
       />
@@ -46,14 +64,28 @@ require_once 'menu.php';
       <input
         type="text"
         name="editora"
-        value=""
+        value="<?= $editora ?? '' ?>"
         placeholder="Editora..."
         class="w-full md:w-1/5 p-2 rounded bg-gray-800 text-white border border-gray-700"
       />
     
       <select name="categoria" class="w-full md:w-1/5 p-2 rounded bg-gray-800 text-white border border-gray-700">
         <option value="">Todas as categorias</option>
-        <option value="">Romance</option>
+        <?php
+          foreach($categoria as $c){
+        ?>
+           <option value="<?= $c['id_categoria'] ?>"><?=  $c['descricao'] ?> 
+            <?php
+              if(isset($categoria_filtro) && $categoria_filtro == $c['$id_categoria']){
+            ?>
+                echo 'selected';
+            <?php
+            }  
+            ?>
+          </option>
+        <?php
+          }
+        ?>
       </select>
       <button type="submit" class="w-full md:w-1/5 bg-blue-600 hover:bg-blue-700 text-white font-semibold p-2 rounded">
         Pesquisar
@@ -62,30 +94,50 @@ require_once 'menu.php';
   </section>
 
   <main class="p-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    <?php
+        foreach($livros as $l){
+          ?>
     <div class="bg-gray-800 hover:bg-gray-700/80 border border-gray-700 rounded-2xl p-4 shadow-md hover:shadow-lg transition-all duration-200 flex gap-4">
-      <img src="../imagens/" alt="Capa do livro" class="w-28 h-40 object-cover rounded-lg border border-gray-700 shadow-sm" />
+      <img src="../imagens/<?= $l['imagem'] ?>" alt="Capa do livro" class="w-28 h-40 object-cover rounded-lg border border-gray-700 shadow-sm" />
       <div class="flex flex-col justify-between">
         <div>
-          <h2 class="text-lg font-semibold">Um amor para recordar</h2>
-          <p class="text-sm text-gray-400">Autor: Dadiv Shilan</p>
-          <p class="text-sm text-gray-400">Editora: Editora Livros Bons</p>
-          <p class="text-sm text-gray-400">Categoria: Romance</p>
+          <h2 class="text-lg font-semibold"><?= $l['titulo']  ?></h2>
+          <p class="text-sm text-gray-400">Autor: <?=  $l['nome_autor'] ?></p>
+          <p class="text-sm text-gray-400">Editora: <?= $l['nome_editora']  ?></p>
+          <p class="text-sm text-gray-400">Categoria: <?= $l['categoria']  ?></p>
         </div>
         <div class="flex items-center gap-2 mt-2">
-          <span class="bg-green-500/20 text-green-300 text-xs font-medium px-2 py-0.5 rounded-full">
-            Disponível
-          </span>
-          <!--
-          <span class="bg-red-500/20 text-red-300 text-xs font-medium px-2 py-0.5 rounded-full">
-            Indisponível
-          </span> -->
+          <?php
+            if($livros->verificaLivroDisponivel($l['id_livro'])){
+              ?>
+              <span class="bg-green-500/20 text-green-300 text-xs font-medium px-2 py-0.5 rounded-full">
+                  Disponivel
+              </span>
+          <?php
+            }else{
+          ?>
+              <span class="bg-green-500/20 text-green-300 text-xs font-medium px-2 py-0.5 rounded-full">
+                  Indisponível
+              </span>
+          <?php
+            }
+          ?>
           <a href="ficha_livro.php?id=000" class="text-sm text-blue-400 border border-blue-500 hover:bg-blue-600 hover:text-white px-3 py-1 rounded transition-all duration-150">
             Ver detalhes
           </a>
         </div>
       </div>
     </div>
+      <?php        
+    }
+      ?>
   </main>
-  <p class="text-center text-gray-400 mt-4">Dados não encontrados.</p>
+  <?php
+    if(empty($livros)){
+  ?>
+      <p class="text-center text-gray-400 mt-4">Dados não encontrados.</p>
+  <?php
+    }
+  ?>
 </body>
 </html>

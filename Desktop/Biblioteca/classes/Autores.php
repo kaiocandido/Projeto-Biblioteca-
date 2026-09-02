@@ -116,4 +116,21 @@ class Autor{
         }
     }
 
+    public function excluir($id_autor){
+        try {
+            $sql = $this->conexao->prepare("DELETE 
+                                            FROM
+                                                autor
+                                            WHERE
+                                                id_autor = :id_autor
+                                        ");
+            $sql->bindValue(':id_autor', $id_autor);
+            $sql->execute();   
+            NULL;
+        } catch (PDOException $e) {
+            return array();
+        } catch (Exception $e){
+            return array();
+        }
+    }
 }

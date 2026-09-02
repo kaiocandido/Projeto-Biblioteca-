@@ -113,4 +113,21 @@ class Categoria{
         }
     }
 
+    public function excluir($id_categoria){
+        try {
+            $sql = $this->conexao->prepare("DELETE 
+                                            FROM
+                                                categoria
+                                            WHERE
+                                                id_categoria = :id_categoria
+                                        ");
+            $sql->bindValue(':id_categoria', $id_categoria);
+            $sql->execute();   
+            NULL;
+        } catch (PDOException $e) {
+            return array();
+        } catch (Exception $e){
+            return array();
+        }
+    }
 }
