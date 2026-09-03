@@ -96,75 +96,58 @@ class Livro{
          }
     }
 
-    public function incluir($nome){
+    public function obterId($id_livro){
         try {
-            $sql = $this->conexao->prepare("INSERT INTO autor (nome) VALUES (:nome)");
-            $sql->bindValue(":nome", $nome);
-            $sql->execute();
-            return true;
-        } catch (PDOException $e) {
-            return false;
-        }catch (Exception $e) {
-            return false;
-        }
-    }
-
-    public function alterar($id_autor, $nome_autor){
-        try {
-            $sql =$this->conexao->prepare("UPDATE
-                                                autor
-                                            SET
-                                                nome = :nome
-                                            WHERE
-                                                id_autor = :id_editora    
-                                            ");
-            $sql->bindValue(':id_editora', $id_autor);
-            $sql->bindValue(':nome', $nome_autor);
-            $sql->execute();
-            return true;
-        }catch(PDOException $e){
-            return false;
-        }catch(Exception $e){
-            return false;
-        }
-    }
-
-
-    public function obterId($id_autor){
-        try {
-            $sql = $this->conexao->prepare("SELECT 
-                                                id_autor, 
-                                                nome, 
-                                                data_cadastro
-                                            FROM
-                                                autor
-                                            WHERE
-                                                id_autor = :id_autor
-                                        ");
-            $sql->bindValue(':id_autor', $id_autor);
+            $sql = $this->conexao->prepare("
+                    SELECT 
+                        l.id_livro,
+                        l.titulo,
+                        l.descricao,
+                        l.id_autor,
+                        l.id_editora,
+                        l.id_categoria,
+                        DATE_FORMAT(l.data_cadastro, '%d/%/%y) AS data_cadastro,
+                        l.ISBN,
+                        l.status,
+                        l.ano_publicacao,
+                        l.imagem,
+                        e.nome AS nome_editora,
+                        a.nome AS nome_autor,
+                        c.descricao AS categoria,
+                    CASE
+                        l.status 
+                    WHEN 
+                        1 
+                    THEN ]
+                        'Ativo'
+                    ELSE
+                        'Inativo'
+                    END AS
+                        status_desc
+                    FROM 
+                        livro l
+                    JOIN
+                        autor a
+                    ON
+                        l.id_autor = a.id_autor
+                    JOIN
+                        categoria c 
+                    ON
+                        l.id_categoria = c.id_categoria
+                    JOIN
+                        editora e
+                    ON
+                        l.id_editora = e.id_editora
+                    WHERE 
+                        id_livro = :id_livro
+                    ");
+            
+            $sql->bindValue(':id_livro', $id_livro);
             $sql->execute();
 
             $dadosAutor = $sql->fetch(PDO::FETCH_ASSOC);
 
             return $dadosAutor;
-        } catch (PDOException $e) {
-            return array();
-        } catch (Exception $e){
-            return array();
-        }
-    }
-
-    public function excluir($id_autor){
-        try {
-            $sql = $this->conexao->prepare("DELETE 
-                                            FROM
-                                                autor
-                                            WHERE
-                                                id_autor = :id_autor
-                                        ");
-            $sql->bindValue(':id_autor', $id_autor);
-            $sql->execute();   
-            NULL;
         } catch (PDOException $e) {
             return array();
         } catch (Exception $e){
@@ -206,4 +189,6 @@ class Livro{
             return false;
         }
     }
+
+    
 }

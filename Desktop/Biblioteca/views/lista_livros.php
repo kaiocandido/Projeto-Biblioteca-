@@ -122,13 +122,13 @@ if(isset($_POST['titulo'])){
           <?php
             }
           ?>
-          <a href="ficha_livro.php?id=000" class="text-sm text-blue-400 border border-blue-500 hover:bg-blue-600 hover:text-white px-3 py-1 rounded transition-all duration-150">
+          <a href="ficha_livro.php?id=<?= $l['id_livro'] ?>" class="text-sm text-blue-400 border border-blue-500 hover:bg-blue-600 hover:text-white px-3 py-1 rounded transition-all duration-150">
             Ver detalhes
           </a>
         </div>
       </div>
     </div>
-      <?php        
+      <?php
     }
       ?>
   </main>

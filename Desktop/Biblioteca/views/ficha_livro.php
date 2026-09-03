@@ -9,7 +9,31 @@
 <body class="bg-gray-900 text-white min-h-screen">
   
   <?php
-  require_once 'menu.php';
+    require_once 'menu.php';
+    require_once '../Projeto-Biblioteca-/Desktop/Biblioteca/classes/Livros.php';
+    require_once '../Projeto-Biblioteca-/Desktop/Biblioteca/classes/Exemplar.php';
+
+    $l = new Livro();
+    $exemplar = new Exemplar();
+  ?>
+
+  <?php
+    if(isset($_GET['id']) && is_numeric($_GET['id'])){
+      $id = htmlspecialchars($_GET['id']);
+      $dadosLivros = $l->obterId($id);
+
+      if(!empty($dadosLivro)){
+        $dadosExemplares = $exemplar->obterPorIdLivro($id);
+
+        $total = count($dadosExemplares);
+
+        extract($dadosLivros);
+      }else {
+        header("Location: ../index.php");
+      }
+    }else {
+      header("Location: ../index.php");
+    }
   ?>
   <!-- Conteúdo principal -->
   <main class="p-4 max-w-5xl mx-auto mt-6 bg-gray-800 rounded-lg shadow-lg relative">
