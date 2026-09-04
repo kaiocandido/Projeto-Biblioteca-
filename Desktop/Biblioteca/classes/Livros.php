@@ -190,5 +190,16 @@ class Livro{
         }
     }
 
-    
+    public function excluir($id_livro){
+        try{
+            $sql = $this->conexao->prepare("DELETE FROM livro WHERE id_livro = :id_livro ");
+            $sql->bindValue(":id_livro", $id_livro);
+            $sql->execute();
+        }catch (PDOException $e) {
+            null;
+        }catch (Exception $e) {
+            null;
+        }
+
+    }
 }

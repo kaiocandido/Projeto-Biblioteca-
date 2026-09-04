@@ -8,6 +8,7 @@
 <body class="bg-gray-900 text-white min-h-screen">
   <?php
     require_once 'menu.php';
+    require_once '../Projeto-Biblioteca-/Desktop/Biblioteca/processamento/exemplar_processamento.php';
   ?>
 
   <!-- Conteúdo -->
@@ -23,7 +24,7 @@
     </div>
     
     <!-- Botão Voltar -->
-    <a href="ficha_livro.php?id=000" class="inline-block mb-4 bg-gray-700 hover:bg-gray-800 px-4 py-2 rounded text-white">
+    <a href="ficha_livro.php?id=<?= $id_livro ?? '' ?>" class="inline-block mb-4 bg-gray-700 hover:bg-gray-800 px-4 py-2 rounded text-white">
       ← Voltar
     </a>
 

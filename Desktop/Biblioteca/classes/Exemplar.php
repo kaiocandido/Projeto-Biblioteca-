@@ -134,4 +134,18 @@ class Exemplar{
         }
     }
     
+    public function incluir($codigo_exemplar, $id_livro){
+        try{
+            $sql = $this->conexao->prepare("INSERT INTO exemplar (codigo, id_livro) VALUES (:codigo, :id_livro)");
+            $sql->bindValue(':codigo', $codigo_exemplar);
+            $sql->bindValue(':id_livro', $id_livro);
+            $sql->execute();
+
+            return true;
+        }catch (PDOException $e) {
+            return false;
+        } catch (Exception $e){
+            return false;
+        }  
+    }
 }
