@@ -198,8 +198,20 @@ class Livro{
         }catch (PDOException $e) {
             null;
         }catch (Exception $e) {
-            null;
+            null; 
         }
 
+    }
+
+    public function remover_imagem_banco($id_livro){
+        try{
+            $sql = $this->conexao->prepare("UPDATE livro SET imagem = null WHERE id_livro = :id_livro ");
+            $sql->bindValue(":id_livro", $id_livro);
+            $sql->execute();
+        }catch (PDOException $e) {
+            null;
+        }catch (Exception $e) {
+            null; 
+        }
     }
 }

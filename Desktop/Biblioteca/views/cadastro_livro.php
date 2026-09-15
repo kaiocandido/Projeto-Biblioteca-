@@ -10,6 +10,7 @@
 
   <?php
     require_once 'menu.php';
+    require_once '../Projeto-Biblioteca-/Desktop/Biblioteca/processamento/livro_processamento.php';
   ?>
   
   <section class="p-4 max-w-4xl mx-auto">
@@ -71,7 +72,14 @@
           required
           class="w-full p-3 rounded-md bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
           <option value="">Selecione uma opção</option>
-          <option value="">Autor 1</option>
+          <?php 
+            foreach ($autores as $aut) {
+          ?>
+              <option value="<?=  $aut['id_autor'] ?>"><?= $aut['nome'] ?></option>
+          <?
+            }
+          ?>
+
         </select>
       </div>
 
@@ -97,7 +105,13 @@
           class="w-full p-3 rounded-md bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
         >
           <option value="">Selecione uma opção</option>
-          <option value="">Editora 1</option>
+          <?php 
+            foreach ($editoras as $edi) {
+          ?>
+              <option value="<?=  $edi['id_editora'] ?>"><?= $edi['nome'] ?></option>
+          <?
+            }
+          ?>
         </select>
       </div>
 
@@ -109,9 +123,13 @@
           required
           class="w-full p-3 rounded-md bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
           <option value="">Selecione uma opção</option>
-          <option value="">
-            Romance
-          </option>
+          <?php 
+            foreach ($categorias as $cat) {
+          ?>
+              <option value="<?=  $cat['id_categoria'] ?>"><?= $cat['descricao'] ?></option>
+          <?
+            }
+          ?>
         </select>
       </div>
 
@@ -153,11 +171,11 @@
 
       <!-- Pré-visualização -->
       <div id="preview-container" 
-           class="mt-3 relative max-w-[200px] 'hidden' ?>">
+           class="mt-3 relative max-w-[200px] <?=  $tem_imagem_salva ? '' : 'hidden' ?> ">
         <input type="hidden" id="remover_imagem_flag" name="remover_imagem" value="0">
         
         <img id="preview-imagem"
-             src=""
+             src="<?= $caminho_da_imagem ?? '#' ?>"
              class="rounded-lg shadow-md w-full h-auto border border-gray-600"
              alt="Pré-visualização">
 
