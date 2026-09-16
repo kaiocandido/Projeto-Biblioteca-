@@ -30,10 +30,17 @@
       <svg class="w-6 h-6 mt-1 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M12 5a7 7 0 100 14 7 7 0 000-14z"/>
       </svg>
+
+      <? 
+        if(!empty($msg_erro)){
+      ?>
       <div>
         <strong class="block font-bold mb-1">Erro:</strong>
-        <span>Erro aqui</span>
+        <span><?=  $msg_erro ?? ''?></span>
       </div>
+      <?
+      }
+      ?>
     </div>
   
     <form method="POST" enctype="multipart/form-data" class="bg-gray-800 p-6 rounded-xl shadow-lg space-y-6">
