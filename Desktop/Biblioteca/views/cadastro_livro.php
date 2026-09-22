@@ -51,7 +51,7 @@
           type="text"
           id="titulo"
           name="titulo"
-          value=""
+          value="<?= $titulo ?? '' ?>"
           maxlength="200"
           required
           class="w-full p-3 rounded-md bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
@@ -65,7 +65,7 @@
           id="descricao"
           name="descricao"
           maxlength="2000"
-          value=""
+          value="<?= $descricao ?? '' ?>"
           required
           class="w-full p-3 rounded-md bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
         />
@@ -82,7 +82,9 @@
           <?php 
             foreach ($autores as $aut) {
           ?>
-              <option value="<?=  $aut['id_autor'] ?>"><?= $aut['nome'] ?></option>
+              <option value="<?=  $aut['id_autor'] ?>" <?= $id_autor ?? '' == $aut['id_autor'] ? 'selected' : '' ?>>
+                <?= $aut['nome'] ?>
+              </option>
           <?
             }
           ?>
@@ -97,7 +99,7 @@
           id="ano_publicacao"
           name="ano_publicacao"
           maxlength="4"
-          value=""
+          value="<?=  $ano_publicacao ?? '' ?>"
           required
           class="w-full p-3 rounded-md bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
         />
@@ -115,7 +117,7 @@
           <?php 
             foreach ($editoras as $edi) {
           ?>
-              <option value="<?=  $edi['id_editora'] ?>"><?= $edi['nome'] ?></option>
+              <option value="<?=  $edi['id_editora'] ?>"><?= $edi['nome'] ?>  <?= $id_editora ?? '' == $edi['id_editora'] ? 'selected' : '' ?>></option>
           <?
             }
           ?>
@@ -133,7 +135,7 @@
           <?php 
             foreach ($categorias as $cat) {
           ?>
-              <option value="<?=  $cat['id_categoria'] ?>"><?= $cat['descricao'] ?></option>
+              <option value="<?=  $cat['id_categoria'] ?>" <?= $id_categoria ?? '' == $cat['id_categoria'] ? 'selected' : '' ?>><?= $cat['descricao'] ?></option>
           <?
             }
           ?>
@@ -147,7 +149,7 @@
           id="isbn"
           name="isbn"
           maxlength="20"
-          value=""
+          value="<?= $isnb ?? '' ?>"
           class="w-full p-3 rounded-md bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
         />
       </div>
@@ -160,8 +162,8 @@
           required
           class="w-full p-3 rounded-md bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
         >
-          <option value="1">Ativo</option>
-          <option value="0">Inativo</option>
+          <option value="1"  <?= $status ?? '' == 1 ? 'selected' : '' ?>> >Ativo</option>
+          <option value="0"  <?= $status ?? '' == 0 ? 'selected' : '' ?>>Inativo</option>
         </select>
       </div>
 

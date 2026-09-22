@@ -326,7 +326,11 @@ class Livro{
             $sql->bindValue(":id_autor", $dados['autor']);
             $sql->bindValue(":id_editora", $dados['editora']);
             $sql->bindValue(":id_categoria", $dados['categoria']);
-            $sql->bindValue(":ISBN", $dados['isbn']);
+            if(!empty($dados['isbn'])){
+                $sql->bindValue(":ISBN", $dados['isbn']);
+            }else{
+                $sql->bindValue(":ISBN", null, PDO::PARAM_NULL);
+            }
             $sql->bindValue(":status", $dados['status']);
             $sql->bindValue(":ano_publicacao", $dados['ano_publicacao']);
             $sql->bindValue(":imagem", $dados['imagem']);
@@ -358,7 +362,11 @@ class Livro{
             $sql->bindValue(":id_autor", $dados['autor']);
             $sql->bindValue(":id_editora", $dados['editora']);
             $sql->bindValue(":id_categoria", $dados['categoria']);
-            $sql->bindValue(":ISBN", $dados['isbn']);
+            if(!empty($dados['isbn'])){
+                $sql->bindValue(":ISBN", $dados['isbn']);
+            }else{
+                $sql->bindValue(":ISBN", null, PDO::PARAM_NULL);
+            }
             $sql->bindValue(":status", $dados['status']);
             $sql->bindValue(":ano_publicacao", $dados['ano_publicacao']);
             $sql->bindValue(":imagem", $dados['imagem']);
